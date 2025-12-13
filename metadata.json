@@ -1,0 +1,7 @@
+{
+  "name": "Termômetro Emocional",
+  "description": "An interactive emotional regulation tool allowing users to track, analyze, and understand their emotional states with contextual data and historical trends.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
