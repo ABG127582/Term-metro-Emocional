@@ -1,7 +1,6 @@
 const CACHE_NAME = 'termometro-emocional-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
+  './index.html',
   'https://cdn.tailwindcss.com'
 ];
 
