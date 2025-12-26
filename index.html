@@ -43,56 +43,7 @@
     </style>
   </head>
   <body>
-    <div id="root">
-      <div style="padding: 20px; font-family: sans-serif; text-align: center; color: #666;">
-        <h1>Carregando...</h1>
-        <p>Se esta mensagem persistir, algo impediu o carregamento da aplicação.</p>
-      </div>
-    </div>
-    <script>
-      window.onerror = function(message, source, lineno, colno, error) {
-        const root = document.getElementById('root');
-        const errorDiv = document.createElement('div');
-        errorDiv.style.padding = '20px';
-        errorDiv.style.background = '#fee';
-        errorDiv.style.border = '1px solid #f00';
-        errorDiv.style.color = '#c00';
-        errorDiv.style.fontFamily = 'monospace';
-        errorDiv.style.margin = '20px';
-        errorDiv.innerHTML = `
-          <h3>Erro de Carregamento (Global):</h3>
-          <p><strong>Msg:</strong> ${message}</p>
-          <p><strong>Loc:</strong> ${source}:${lineno}:${colno}</p>
-          <pre>${error ? error.stack : ''}</pre>
-        `;
-        // Append instead of overwrite to keep history if multiple errors
-        if (root.innerHTML.includes('Carregando...')) {
-            root.innerHTML = '';
-        }
-        root.appendChild(errorDiv);
-        console.error("Global Error Caught:", error);
-      };
-
-      window.addEventListener('unhandledrejection', function(event) {
-        const root = document.getElementById('root');
-        const errorDiv = document.createElement('div');
-        errorDiv.style.padding = '20px';
-        errorDiv.style.background = '#fff3cd';
-        errorDiv.style.border = '1px solid #ffeeba';
-        errorDiv.style.color = '#856404';
-        errorDiv.style.fontFamily = 'monospace';
-        errorDiv.style.margin = '20px';
-        errorDiv.innerHTML = `
-          <h3>Promise Rejeitada (Unhandled):</h3>
-          <p><strong>Reason:</strong> ${event.reason}</p>
-        `;
-        if (root.innerHTML.includes('Carregando...')) {
-            root.innerHTML = '';
-        }
-        root.appendChild(errorDiv);
-        console.error("Unhandled Rejection:", event.reason);
-      });
-    </script>
+    <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

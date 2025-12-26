@@ -13,5 +13,15 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'lucide-react'],
+          charts: ['recharts']
+        }
+      }
+    }
   }
 });
