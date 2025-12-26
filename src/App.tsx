@@ -7,11 +7,11 @@ import { HistoryView } from './components/HistoryView';
 import { BreathingModal } from './components/BreathingModal';
 import { emotionalScales } from './constants';
 import { storageService } from './services/storageService';
-import { Assessment, ToastMessage, ContextData } from './types';
+import { Assessment, ToastMessage, ContextData, EmotionLevel } from './types';
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => storageService.getTheme());
-  const [hoveredLevel, setHoveredLevel] = useState<{ emotionKey: string; level: any } | null>(null);
+  const [hoveredLevel, setHoveredLevel] = useState<{ emotionKey: string; level: EmotionLevel } | null>(null);
   const [view, setView] = useState<'scale' | 'history'>('scale');
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [toast, setToast] = useState<ToastMessage | null>(null);
