@@ -1,10 +1,7 @@
 import { Heart, Frown, Flame, AlertCircle, Zap, ThumbsDown } from 'lucide-react';
-import { EmotionColor, EmotionKey, EmotionScale, NeuroChemistry } from './types';
+import { EmotionScale, NeuroInfo } from './types';
 
-export const STORAGE_KEY = 'emotional_assessments';
-export const THEME_KEY = 'theme_preference';
-
-export const EMOTION_COLORS: Record<EmotionKey, EmotionColor> = {
+export const emotionColors: Record<string, { light: string; main: string; dark: string; glow: string; chart: string }> = {
   alegria: { light: '#FBBF24', main: '#F59E0B', dark: '#D97706', glow: 'rgba(245, 158, 11, 0.3)', chart: '#FBBF24' },
   tristeza: { light: '#93C5FD', main: '#60A5FA', dark: '#3B82F6', glow: 'rgba(96, 165, 250, 0.3)', chart: '#60A5FA' },
   raiva: { light: '#FCA5A5', main: '#F87171', dark: '#DC2626', glow: 'rgba(248, 113, 113, 0.3)', chart: '#F87171' },
@@ -13,135 +10,136 @@ export const EMOTION_COLORS: Record<EmotionKey, EmotionColor> = {
   nojo: { light: '#86EFAC', main: '#34D399', dark: '#10B981', glow: 'rgba(52, 211, 153, 0.3)', chart: '#34D399' }
 };
 
-// Prompts terapêuticos para reflexão guiada
-export const REFLECTION_PROMPTS: Record<EmotionKey, string[]> = {
-  alegria: [
-    "O que exatamente desencadeou essa alegria?",
-    "Como posso cultivar mais momentos como este?",
-    "Quem mais se beneficiaria se eu compartilhasse essa energia?",
-    "Que força pessoal eu usei hoje?"
-  ],
-  tristeza: [
-    "O que eu sinto que perdi ou está faltando?",
-    "O que meu corpo está pedindo agora (descanso, choro, conforto)?",
-    "Existe algo que eu precise aceitar para seguir em frente?",
-    "Como posso ser gentil comigo mesmo neste momento?"
-  ],
-  raiva: [
-    "Qual limite pessoal meu foi desrespeitado?",
-    "O que eu gostaria de mudar nessa situação?",
-    "Essa raiva está protegendo alguma outra emoção (medo, tristeza)?",
-    "Como posso expressar essa insatisfação de forma construtiva?"
-  ],
-  medo: [
-    "Qual é a pior coisa que pode acontecer e qual a probabilidade real?",
-    "O que está sob meu controle agora e o que não está?",
-    "Que recursos ou apoio eu tenho para lidar com isso?",
-    "O que eu diria a um amigo que estivesse sentindo isso?"
-  ],
-  surpresa: [
-    "O que essa surpresa me revelou sobre minhas expectativas?",
-    "Isso muda meus planos? Se sim, como posso me adaptar?",
-    "O que eu aprendi de novo com essa situação?"
-  ],
-  nojo: [
-    "O que exatamente está me repelindo?",
-    "Isso viola meus valores ou minha segurança física?",
-    "Como posso me afastar ou colocar um limite saudável?"
-  ]
-};
+export const somaticSensations = [
+  "Taquicardia (Coração acelerado)",
+  "Tensão muscular",
+  "Nó na garganta",
+  "Respiração curta",
+  "Calor no rosto",
+  "Frio na barriga",
+  "Tremores",
+  "Sudorese",
+  "Peso no peito",
+  "Cansaço súbito",
+  "Agitação motora",
+  "Mandíbula travada",
+  "Vazio no estômago",
+  "Lágrimas",
+  "Formigamento"
+];
 
-// Dados Neuroquímicos
-export const NEURO_DATA: Record<EmotionKey, NeuroChemistry> = {
+export const NEURO_DATA: Record<string, NeuroInfo> = {
   alegria: {
-    description: "Ativação do sistema de recompensa e vínculo social.",
-    recoveryEstimate: "Rápida (10-30 min), mas ocitocina pode durar mais.",
+    description: "Ativação do sistema de recompensa e opioides endógenos.",
+    recoveryEstimate: "30min - 2h (Pico sustentado, decaimento suave)",
     hormones: [
-      { name: "Dopamina", color: "#F59E0B", description: "Prazer e motivação", decayProfile: { peakTime: 5, decayRate: 0.1 } },
-      { name: "Serotonina", color: "#10B981", description: "Bem-estar geral", decayProfile: { peakTime: 10, decayRate: 0.05 } },
-      { name: "Endorfinas", color: "#EC4899", description: "Alívio e euforia", decayProfile: { peakTime: 2, decayRate: 0.2 } },
-      { name: "Ocitocina", color: "#8B5CF6", description: "Vínculo e confiança", decayProfile: { peakTime: 15, decayRate: 0.03 } }
+      {
+        name: "Dopamina",
+        color: "#FBBF24",
+        description: "Motivação e prazer",
+        decayProfile: { peakTime: 15, decayRate: 0.8 }
+      },
+      {
+        name: "Endorfina",
+        color: "#EC4899",
+        description: "Bem-estar e alívio",
+        decayProfile: { peakTime: 10, decayRate: 1.2 }
+      },
+      {
+        name: "Serotonina",
+        color: "#34D399",
+        description: "Satisfação e regulação",
+        decayProfile: { peakTime: 30, decayRate: 0.5 }
+      }
     ]
   },
   tristeza: {
-    description: "Queda na serotonina/dopamina. Em casos intensos, aumento do cortisol devido ao estresse da perda.",
-    recoveryEstimate: "Lenta (Horas a dias). O cérebro entra em modo de 'conservação de energia'.",
+    description: "Baixa atividade de neurotransmissores excitatórios e aumento leve de cortisol.",
+    recoveryEstimate: "4h - 24h+ (Metabolização lenta)",
     hormones: [
-      { name: "Serotonina (Queda)", color: "#3B82F6", description: "Baixos níveis causam apatia", decayProfile: { peakTime: 0, decayRate: 0.01 } }, // Representado invertido ou como impacto negativo
-      { name: "Cortisol", color: "#92400E", description: "Hormônio do estresse (se houver angústia)", decayProfile: { peakTime: 20, decayRate: 0.02 } }
+      {
+        name: "Cortisol",
+        color: "#60A5FA",
+        description: "Estresse prolongado",
+        decayProfile: { peakTime: 60, decayRate: 0.3 }
+      },
+      {
+        name: "Prolactina",
+        color: "#818CF8",
+        description: "Resposta ao choro/conforto",
+        decayProfile: { peakTime: 30, decayRate: 0.6 }
+      }
     ]
   },
   raiva: {
-    description: "Resposta de 'luta'. Inundação rápida de energia para ação imediata.",
-    recoveryEstimate: "Moderada a Lenta (30m - 2h). A adrenalina passa rápido, mas o cortisol pode persistir.",
+    description: "Resposta 'Lutar', alta energia e mobilização muscular.",
+    recoveryEstimate: "40min - 2h (Para metabolizar adrenalina)",
     hormones: [
-      { name: "Adrenalina", color: "#DC2626", description: "Energia explosiva imediata", decayProfile: { peakTime: 1, decayRate: 0.3 } },
-      { name: "Noradrenalina", color: "#EA580C", description: "Foco e prontidão", decayProfile: { peakTime: 3, decayRate: 0.15 } },
-      { name: "Testosterona", color: "#7C2D12", description: "Dominância e agressividade", decayProfile: { peakTime: 10, decayRate: 0.05 } },
-      { name: "Cortisol", color: "#92400E", description: "Estresse prolongado", decayProfile: { peakTime: 15, decayRate: 0.04 } }
+      {
+        name: "Adrenalina",
+        color: "#EF4444",
+        description: "Energia explosiva imediata",
+        decayProfile: { peakTime: 5, decayRate: 1.5 }
+      },
+      {
+        name: "Noradrenalina",
+        color: "#F97316",
+        description: "Foco e prontidão",
+        decayProfile: { peakTime: 10, decayRate: 0.9 }
+      },
+      {
+        name: "Testosterona",
+        color: "#78350F",
+        description: "Dominância (leve aumento)",
+        decayProfile: { peakTime: 20, decayRate: 0.4 }
+      }
     ]
   },
   medo: {
-    description: "Resposta de 'fuga' ou congelamento. Foco total na sobrevivência.",
-    recoveryEstimate: "Variável. O 'susto' passa em minutos, a ansiedade residual pode durar horas.",
+    description: "Resposta 'Fugir ou Congelar' do eixo HPA.",
+    recoveryEstimate: "1h - 3h (Cortisol residual pode durar mais)",
     hormones: [
-      { name: "Adrenalina", color: "#7C3AED", description: "Preparação para fuga rápida", decayProfile: { peakTime: 0.5, decayRate: 0.4 } },
-      { name: "Cortisol", color: "#92400E", description: "Vigilância prolongada", decayProfile: { peakTime: 10, decayRate: 0.03 } }
+      {
+        name: "Adrenalina",
+        color: "#D946EF",
+        description: "Alerta de perigo",
+        decayProfile: { peakTime: 2, decayRate: 2.0 }
+      },
+      {
+        name: "Cortisol",
+        color: "#8B5CF6",
+        description: "Estresse e vigilância",
+        decayProfile: { peakTime: 20, decayRate: 0.4 }
+      }
     ]
   },
   surpresa: {
-    description: "Mecanismo de alerta instantâneo para avaliar novidades.",
-    recoveryEstimate: "Muito Rápida (< 5 min). O cérebro decide rapidamente se é bom (alegria) ou ruim (medo).",
+    description: "Sobressalto neural para focar atenção em novo estímulo.",
+    recoveryEstimate: "15min - 45min (Rápida habituação)",
     hormones: [
-      { name: "Adrenalina", color: "#06B6D4", description: "Pico de atenção súbito", decayProfile: { peakTime: 0.2, decayRate: 0.8 } }
+      {
+        name: "Adrenalina",
+        color: "#06B6D4",
+        description: "Pico de atenção",
+        decayProfile: { peakTime: 1, decayRate: 2.5 }
+      }
     ]
   },
   nojo: {
-    description: "Ativação da ínsula para rejeitar tóxicos (físicos ou sociais).",
-    recoveryEstimate: "Rápida assim que o estímulo é removido.",
+    description: "Ativação da ínsula e resposta visceral de rejeição.",
+    recoveryEstimate: "20min - 1h (Depende da remoção do estímulo)",
     hormones: [
-      { name: "Resposta Vagal", color: "#10B981", description: "Náusea/desaceleração cardíaca", decayProfile: { peakTime: 2, decayRate: 0.2 } }
+      {
+        name: "Resposta Vagal",
+        color: "#10B981",
+        description: "Náusea/Rejeição (Simulação)",
+        decayProfile: { peakTime: 5, decayRate: 1.0 }
+      }
     ]
   }
 };
 
-// Estratégias categorizadas para sugestão inteligente baseada em Arousal
-export const REGULATION_STRATEGIES = {
-  // Alta Ativação (> 7.5) - Foco Fisiológico (Baseado em DBT TIPP)
-  HIGH_AROUSAL: [
-    'Respiração Controlada (4-7-8)',
-    'Água Gelada no Rosto',
-    'Exercício Intenso Rápido',
-    'Relaxamento Muscular Progressivo',
-    'Sair do Ambiente (Time-out)'
-  ],
-  // Média Ativação (4.5 - 7.5) - Foco Cognitivo/Processamento (TCC)
-  MODERATE_AROUSAL: [
-    'Escrita Terapêutica',
-    'Desafiar Pensamentos',
-    'Conversa com Apoio',
-    'Meditação/Mindfulness',
-    'Ouvir Música',
-    'Arte/Criatividade'
-  ],
-  // Baixa Ativação (< 4.5) - Foco Comportamental/Suave
-  LOW_AROUSAL: [
-    'Caminhada Leve',
-    'Alongamento',
-    'Pausa para Café/Chá',
-    'Distração Leve (Vídeo/Leitura)',
-    'Organizar o Ambiente',
-    'Autocuidado Físico'
-  ]
-};
-
-export const ALL_COPING_OPTIONS = [
-  ...REGULATION_STRATEGIES.HIGH_AROUSAL,
-  ...REGULATION_STRATEGIES.MODERATE_AROUSAL,
-  ...REGULATION_STRATEGIES.LOW_AROUSAL
-].filter((v, i, a) => a.indexOf(v) === i); // Unique list
-
-export const EMOTIONAL_SCALES: Record<EmotionKey, EmotionScale> = {
+export const emotionalScales: Record<string, EmotionScale> = {
   alegria: {
     name: "Alegria",
     icon: Heart,
